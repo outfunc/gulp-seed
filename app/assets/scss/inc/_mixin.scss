@@ -1,0 +1,520 @@
+//////////////////////////////////////////////////////////
+//
+//	box-sizing : ボックスサイズの算出方法を指定する
+//
+//	border-box: パディングとボーダーを幅と高さに含めない（初期値）
+// 	border-box: パディングとボーダーを幅と高さに含める
+//	inherit:    親要素の値を継承する
+//
+//////////////////////////////////////////////////////////
+$arg : null;
+
+@mixin boxsizing( $type : content-box ){
+	 @each $prefix in -webkit-, -moz-, -ms-, -o-, '' {
+          #{$prefix}#{box-sizing}: $type + -box;
+     }
+}
+
+
+
+// $sprites: sprite-map("sprites/*.png");
+// $sprites-img:sprite-url($sprites);
+// @mixin sprite-background($name) {
+//  	background-image: $sprites-img;
+//  	background-repeat: no-repeat;
+//  	display: block;
+//  	height: image-height(sprite-file($sprites, $name)) / 2;
+//  	width: image-width(sprite-file($sprites, $name)) / 2;
+//  	$ypos: round(nth(sprite-position($sprites, $name), 2) / 2);
+//  	background-position: 0 $ypos;
+//  	@include background-size(50px auto);
+// }
+
+
+@mixin gradient-top-lighten($color:#666, $lighten:10%){
+  background-color: $color;
+  @include filter-gradient(lighten($color, $lighten), $color, vertical);
+  @include background-image(linear-gradient(lighten($color, $lighten) 0%, $color 100%));
+}
+
+
+// @mixin setspimg($img) {
+// 	width: image-width( $img ) /  2;
+// 	height : image-height( $img ) / 2;
+// 	background-image: image-url( $img);
+// 	background-size: image-width( $img ) / 2 image-height( $img ) / 2 ;
+// }
+
+//
+// @TODO: Add docs to navSquence!
+//
+@mixin setspimg($img, $row:1, $col:1) {
+	width: image-width( $img ) / $row / 2;
+	height : image-height( $img ) / $col / 2;
+	background-image: image-url( $img);
+	background-size: image-width( $img ) / 2 image-height( $img ) / 2 ;
+}
+
+//
+// @TODO: Add docs to bgPosSq!
+//
+@mixin bgPosSq-a( $params, $x:0, $y:0, $hover:0 ) {
+	@for $i from 1 through length( $params ){
+		.#{ to-lower-case(nth( $params, $i)) } a {
+			@if $x == 0 {
+				background-position: 0px #{ $y * ($i - 1)}px;
+			} @else if $y == 0 {
+				background-position: #{ $x * ($i - 1)}px 0px;
+			}
+		}
+		.#{to-lower-case(nth( $params, $i))} a:hover {
+			@if $x == 0 {
+				background-position: $hover + px #{ $y * ($i - 1)}px;
+			} @else if $y == 0 {
+				background-position: #{ $x * ($i - 1)}px $hover + px;
+			}
+		}
+	}
+}
+
+
+@mixin bgPosSq-span( $params, $x:0, $y:0, $hover:0 ) {
+	@for $i from 1 through length( $params ){
+		.#{ to-lower-case(nth( $params, $i)) } span {
+			@if $x == 0 {
+				background-position: 0px #{ $y * ($i - 1)}px;
+			} @else if $y == 0 {
+				background-position: #{ $x * ($i - 1)}px 0px;
+			}
+		}
+		.#{to-lower-case(nth( $params, $i))} a:hover span {
+			@if $x == 0 {
+				background-position: $hover + px #{ $y * ($i - 1)}px;
+			} @else if $y == 0 {
+				background-position: #{ $x * ($i - 1)}px $hover + px;
+			}
+		}
+	}
+}
+
+
+// [mixin] 文字リンクカラーのミックスインを作る
+
+@mixin link-color($normal, $hover) {
+	color: $normal;
+	&:hover {
+		color: $hover;
+		text-decoration: none;
+	}
+}
+
+
+
+// @usesage
+// a {
+//   @include link-color(#f00, #00f);
+// }
+
+
+
+
+
+@mixin nav-list( $params ){
+	@for $i from 1 through length( $params ){
+		$arg: nth( $params, $i);
+		.#{to-lower-case( nth( $params, $i) )} {
+			// background-color: #FFF;
+			@content;
+		}
+	}
+}
+
+
+@mixin and-nav-list( $params ){
+	@for $i from 1 through length( $params ){
+		&.#{to-lower-case( nth( $params, $i) )} {
+
+			top: 71px * ( $i - 1 );
+
+		}
+	}
+}
+
+@mixin dlt( $width ){
+	dt{
+		float: left;
+		clear: left;
+		width : $width;
+	}
+	dd{
+		padding-left: $width;
+	}
+}
+
+
+@mixin hide-text{
+	display: block;
+	overflow: hidden;
+	text-indent: 100%;
+	white-space: nowrap;
+	background-repeat: no-repeat;
+	background-position: 0 0;
+}
+
+@mixin spimg{
+	@include hide-text;
+}
+
+@mixin opacity( $opacity ){
+		filter: unquote("progid:DXImageTransform.Microsoft.Alpha(Opacity=#{round($opacity * 100)})");
+  	opacity: $opacity;
+}
+
+@mixin inline-block{
+  display: inline-block;
+  vertical-align: middle;
+  *vertical-align: auto;
+  *zoom: 1;
+  *display: inline;
+}
+
+// @mixin bgimg-strech{
+// 	background-position: top center;
+// 	@include background-size( cover );
+// }
+
+
+
+@mixin background-opacity( $color, $opacity) {
+		$rgba: rgba($color, $opacity);
+    background-color: $rgba;
+
+	  $ie-hex-str: ie-hex-str($rgba);
+    filter:progid:DXImageTransform.Microsoft.Gradient(GradientType=0,startColorstr=#{$ie-hex-str},endColorstr=#{$ie-hex-str});
+}
+
+
+
+
+@mixin divider( $color : #333 ){
+	border-bottom: none;
+	border-top: none;
+	border-right: solid 1px $color;
+	width: 0 !important;
+	font-size: 0;
+}
+
+
+
+@mixin showcase-html-classes( $selector, $min, $hei ){
+
+  .#{$selector}-container{
+    overflow: hidden;
+    height: $hei+px;
+  }
+  .#{$selector}-view{
+    margin: 0 auto;
+    position: relative;
+  }
+  .#{$selector}{
+    list-style: none;
+    padding: 0;
+    margin: 0;
+  }
+}
+
+
+@mixin after-triangle( $size:10, $color:#333, $direction:top){
+  position: relative;
+
+	@if( $direction == top ){
+	  &:after{
+	    position: absolute;
+	    top: -$size * 2px;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-bottom: $size+px solid $color;
+	  }
+	}
+
+	@if( $direction == bottom ){
+	  &:after{
+	    position: absolute;
+	    bottom: -$size * 2px;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-top: $size+px solid $color;
+	  }
+	}
+	@if( $direction == bottom_up ){
+	  &:after{
+	    position: absolute;
+	    bottom: 0;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-bottom: $size+px solid $color;
+	  }
+
+	}
+	@if( $direction == bottom_down ){
+	  &:after{
+	    position: absolute;
+	    bottom: -$size * 2px;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-top: $size+px solid $color;
+	  }
+
+	}
+
+}
+
+@mixin before-triangle( $size:10, $color:#333, $direction:top){
+  position: relative;
+
+	@if( $direction == top ){
+	  &:before{
+	    // position: absolute;
+	    // // top: -$size * 2px;
+	    // left: 50%;
+	    // margin-left: -$size+px;
+	    // content: " ";
+	    // width: 0;
+	    // height: 0;
+	    // border: $size+px solid transparent;
+	    // border-bottom: $size+px solid $color;
+		position: absolute;
+		left: 0;
+		margin-left: -$size+px;
+		content: " ";
+		width: 0;
+		height: 0;
+		border: $size+px solid transparent;
+		border-top: $size+px solid $color;
+	  }
+	}
+
+	@if( $direction == bottom ){
+	  &:before{
+	    position: absolute;
+	    bottom: -$size * 2px;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-top: $size+px solid $color;
+	  }
+	}
+	@if( $direction == bottom_up ){
+	  &:before{
+	    position: absolute;
+	    bottom: 0;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-bottom: $size+px solid $color;
+	  }
+
+	}
+	@if( $direction == bottom_down ){
+	  &:before{
+	    position: absolute;
+	    bottom: -$size * 2px;
+	    left: 50%;
+	    margin-left: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-top: $size+px solid $color;
+	  }
+
+	}
+	@if( $direction == left ){
+	  &:before{
+	    position: absolute;
+	    bottom: -$size * 2px;
+	    left: 0;
+	    top: 50%;
+	    margin-top: -$size+px;
+	    content: " ";
+	    width: 0;
+	    height: 0;
+	    border: $size+px solid transparent;
+	    border-left: $size+px solid $color;
+	  }
+
+	}
+
+}
+
+@mixin active-squece($params){
+	@for $i from 1 through length( $params ){
+		$id : to-lower-case( nth( $params, $i) );
+		.#{$id} {
+			.#{$id} &{
+				@content;
+			}
+		}
+	}
+}
+
+
+
+
+@mixin respective-squence($params){
+	@for $i from 1 through length( $params ){
+		$id : to-lower-case( nth( $params, $i) );
+		.#{$id} {
+			.#{$id} &{
+				@content;
+			}
+		}
+	}
+}
+
+
+@mixin responsive-map(){
+
+	position: relative;
+	padding-bottom: 60%; // これが縦横比
+	height: 0;
+	overflow: hidden;
+
+	iframe {
+		position: absolute;
+		top: 0;
+		left: 0;
+		width: 100% !important;
+		height: 100% !important;
+	}
+}
+
+@mixin mobile(){
+	// @for $i from 1 through length( $params ){
+	// 	$id : to-lower-case( nth( $params, $i) );
+	// 	.#{$id} {
+	// 		.#{$id} &{
+	// 			@content;
+	// 		}
+	// 	}
+	// }
+	@media only screen and (max-width: 640px) {
+		@content;
+	}
+}
+
+@mixin pc(){
+	// @for $i from 1 through length( $params ){
+	// 	$id : to-lower-case( nth( $params, $i) );
+	// 	.#{$id} {
+	// 		.#{$id} &{
+	// 			@content;
+	// 		}
+	// 	}
+	// }
+	@media only screen and (min-width: 641px) {
+		@content;
+	}
+}
+
+
+
+
+// @mixin respective-squence2($params){
+// 	@for $i from 1 through length( $params ){
+// 		$id : to-lower-case( nth( $params, $i) );
+// 		.page--#{$id} &{
+// 			@content;
+// 		}
+// 	}
+// }
+
+
+
+
+// Extend
+// CSS Transition Easing
+// Default
+$linear: cubic-bezier(0.250, 0.250, 0.750, 0.750);
+$ease: cubic-bezier(0.250, 0.100, 0.250, 1.000);
+$ease-in: cubic-bezier(0.420, 0.000, 1.000, 1.000);
+$ease-out: cubic-bezier(0.000, 0.000, 0.580, 1.000);
+$ease-in-out: cubic-bezier(0.420, 0.000, 0.580, 1.000);
+// In
+$easeInQuad: cubic-bezier(0.550, 0.085, 0.680, 0.530);
+$easeInCubic: cubic-bezier(0.550, 0.055, 0.675, 0.190);
+$easeInQuart: cubic-bezier(0.895, 0.030, 0.685, 0.220);
+$easeInQuint: cubic-bezier(0.755, 0.050, 0.855, 0.060);
+$easeInSine: cubic-bezier(0.470, 0.000, 0.745, 0.715);
+$easeInExpo: cubic-bezier(0.950, 0.050, 0.795, 0.035);
+$easeInCirc: cubic-bezier(0.600, 0.040, 0.980, 0.335);
+$easeInBack: cubic-bezier(0.600, -0.280, 0.735, 0.045);
+// Out
+$easeOutQuad: cubic-bezier(0.250, 0.460, 0.450, 0.940);
+$easeOutCubic: cubic-bezier(0.215, 0.610, 0.355, 1.000);
+$easeOutQuart: cubic-bezier(0.165, 0.840, 0.440, 1.000);
+$easeOutQuint: cubic-bezier(0.230, 1.000, 0.320, 1.000);
+$easeOutSine: cubic-bezier(0.390, 0.575, 0.565, 1.000);
+$easeOutExpo: cubic-bezier(0.190, 1.000, 0.220, 1.000);
+$easeOutCirc: cubic-bezier(0.075, 0.820, 0.165, 1.000);
+$easeOutBack: cubic-bezier(0.175, 0.885, 0.320, 1.275);
+// In Out
+$easeInOutQuad: cubic-bezier(0.455, 0.030, 0.515, 0.955);
+$easeInOutCubic: cubic-bezier(0.645, 0.045, 0.355, 1.000);
+$easeInOutQuart: cubic-bezier(0.770, 0.000, 0.175, 1.000);
+$easeInOutQuint: cubic-bezier(0.860, 0.000, 0.070, 1.000);
+$easeInOutSine: cubic-bezier(0.445, 0.050, 0.550, 0.950);
+$easeInOutExpo: cubic-bezier(1.000, 0.000, 0.000, 1.000);
+$easeInOutCirc: cubic-bezier(0.785, 0.135, 0.150, 0.860);
+$easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
+
+// animation
+%animation{
+  transition-duration: 250ms;
+  transition-timing-function: $ease;
+  transition-property: all;
+
+}
+
+%c-white{
+	color: #fff;
+}
+%c-black{
+	color: #000;
+}
+%clearfix {
+  &:after {
+    content: "";
+    display: table;
+    clear: both;
+  }
+  *zoom: 1;
+  .left{
+  	float: left;
+  }
+  .right{
+  	float: right;
+  }
+}

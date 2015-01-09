@@ -1,0 +1,27 @@
+{
+  "name": "gulp-base-bower",
+  "version": "1.0.0",
+  "authors": [
+    "outfunc <outfunc@gmail.com>"
+  ],
+  "license": "MIT",
+  "private": true,
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "jquery": "1.11.2",
+    "jquery.easing": "~1.3.1",
+    "jquery.transit": "~0.9.12",
+    "foundation": "~5.4.3",
+    "backgroundpos": "https://github.com/kbwood/backgroundpos.git",
+    "jquery-hashchange" : "https://github.com/cowboy/jquery-hashchange.git",
+    "jquery-mousewheel": "https://github.com/brandonaaron/jquery-mousewheel.git",
+    "breakpoints": "https://github.com/xoxco/breakpoints.git",
+    "jquery-touchswipe": "~1.6.6"
+  }
+}

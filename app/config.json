@@ -1,0 +1,10 @@
+{
+    "config": {
+        "root" : "/",
+        "title": "hogehoge",
+        "desc": "",
+        "siteurl": "",
+        "pageid": "top",
+        "hierarchy": "/"
+    }
+}

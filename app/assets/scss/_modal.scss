@@ -1,0 +1,66 @@
+.modal{
+	overflow: hidden;
+	height: 100%;
+}
+
+.modalview{
+	top: 0;
+	left: 0;
+	width: 100%;
+	height: 100%;
+	z-index: 9999;
+	position: fixed;
+	outline: 0!important;
+	overflow-y: auto;
+	overflow-x: hidden;
+	display: none;
+	.mv-bg{
+		top: 0;
+		left: 0;
+		width: 100%;
+		height: 100%;
+		z-index: 1042;
+		overflow: hidden;
+		position: fixed;
+		background: #000;
+		@include opacity( 0.9 );
+	}
+	@include mobile {
+		display: none !important;
+	}
+	.mv-container{
+		text-align: center;
+		position: absolute;
+		width: 100%;
+		height: 100%;
+		left: 0;
+		top: 0;
+	}
+	.mv-content{
+		position: relative;
+		margin: 0 auto;
+		z-index: 1045;
+		width: 720px;
+		color: #fff;
+		background: #222;
+		display: none;
+
+		.btn-close{
+			line-height: 1;
+			padding: 12px 12px 14px;
+			text-align: right;
+			a{
+				@include inline-block;
+				vertical-align: bottom;
+				padding: 6px 8px;
+				line-height: 0;
+				background-color: #404040;
+				transition: background-color 80ms $ease-in-out;
+				&:hover{
+					background-color: #5a5a5a;
+				}
+			}
+
+		}
+	}
+}

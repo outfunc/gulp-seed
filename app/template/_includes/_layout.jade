@@ -1,0 +1,33 @@
+block params
+doctype
+include _head
+	block head
+		head
+			meta(charset="UTF-8")
+			meta(http-equiv="X-UA-Compatible" content="IE=edge,chrome=1")
+			title= config.title
+			meta(name="viewport" content="width=device-width, initial-scale=1")
+			meta(name="description" content=config.desc)
+
+			block style
+				link(rel='stylesheet' href='#{config.hierarchy}assets/css/style.css')
+				include _ie_js
+
+	body(class=("" + (__pageid__?__pageid__ : 'null')))
+		div.wrap
+			block content
+				div.main-header
+					block main-header
+				block main-header-title
+				div.main-contents
+					block main-contents
+
+			include ../_parts/_main-footer
+			block modal
+		block script
+			<script src="#{config.hierarchy}assets/js/plugins.js"></script>
+			<script src="#{config.hierarchy}assets/js/jquery.hashchange.min.js"></script>
+			<script src="#{config.hierarchy}assets/js/main.js"></script>
+			//- include _ga
+	block foot
+include _foot

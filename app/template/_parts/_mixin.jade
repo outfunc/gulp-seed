@@ -1,0 +1,52 @@
+mixin list-nav
+	ul
+		- for (var i = 0; i < arguments.length; i++) {
+			li(class=arguments[i].toLowerCase() )
+				a(href= arguments[i].toLowerCase()  + '.html')
+					span #{ arguments[i] }
+		- }
+
+
+mixin list-nav2( navs )
+	each nav in navs
+		li(class=nav.link)
+			a(href="/" + nav.link + '/')= nav.name
+
+
+mixin breadcrumbs
+	p test
+
+
+
+mixin showcase( selector, num, path, ext  )
+	div(class=selector+"-container")
+		div(class=selector+"-view")
+			ul(class=selector)
+				- for ( var i =1; i <= num; i++ )
+					li
+						- var n =  i < 10 ? i ='0' + i : i
+						img(src=path + n + '.' + ext )
+			if block
+				block
+
+
+
+mixin copyright( src )
+	p.copyright Copyright&copy; #{src} All Rights Reserved
+
+
+mixin util-link( navs )
+	ul
+		- for (var i = 0; i < arguments.length; i++) {
+			li(class=arguments[i].toLowerCase() )
+				a(href= arguments[i].toLowerCase()  + '.html') #{ arguments[i] }
+			li.divider |
+		- }
+
+
+mixin checkbox( value )
+	input(type="checkbox" name="#{value}" value="#{value}" checked)
+	label(for="#{value}") #{value}
+
+
+			- }
