@@ -6,6 +6,7 @@
   "main": "gulpfile.js",
   "scripts": {
     "start": "gulp",
+    "bower": "bower install",
     "gulpbuild": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
   },
@@ -49,6 +50,7 @@
     "gulp-notify": "~2.1.0",
     "rimraf": "~2.2.8",
     "main-bower-files": "~2.4.1",
-    "gulp-shell": "~0.2.11"
+    "gulp-shell": "~0.2.11",
+    "gulp-if": "~1.2.5"
   }
 }
