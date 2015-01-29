@@ -5,7 +5,7 @@
   "author": "outfunc",
   "main": "gulpfile.js",
   "scripts": {
-    "start": "gulp --require coffee-script",
+    "start": "gulp",
     "bower": "bower install",
     "gulpbuild": "gulp build",
     "test": "echo \"Error: no test specified\" && exit 1"
@@ -51,8 +51,6 @@
     "rimraf": "~2.2.8",
     "main-bower-files": "~2.4.1",
     "gulp-shell": "~0.2.11",
-    "gulp-if": "~1.2.5",
-    "gulp-coffee": "~2.2.0",
-    "coffee-script": "~1.8.0"
+    "gulp-if": "~1.2.5"
   }
 }
