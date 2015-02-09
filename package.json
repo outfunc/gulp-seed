@@ -53,6 +53,7 @@
     "gulp-shell": "~0.2.11",
     "gulp-if": "~1.2.5",
     "gulp-coffee": "~2.2.0",
-    "coffee-script": "~1.8.0"
+    "coffee-script": "~1.8.0",
+    "gulp-iconv": "0.0.1"
   }
 }

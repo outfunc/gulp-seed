@@ -6,48 +6,76 @@ $ = require("gulp-load-plugins")(
   ]
   replaceString: /\bgulp[\-.]/
 )
-runSequence = require("run-sequence")
-browserSync = require("browser-sync")
-mainBowerFiles = require("main-bower-files")
-browserify = require("browserify")
-debowerify = require("debowerify")
-vinylsource = require("vinyl-source-stream")
-streamify = require("gulp-streamify")
-rimraf = require("rimraf")
-del = require("del")
-gulpif = require("gulp-if")
-isInit = false
+runSequence     = require("run-sequence")
+browserSync     = require("browser-sync")
+mainBowerFiles  = require("main-bower-files")
+browserify      = require("browserify")
+debowerify      = require("debowerify")
+vinylsource     = require("vinyl-source-stream")
+streamify       = require("gulp-streamify")
+rimraf          = require("rimraf")
+del             = require("del")
+gulpif          = require("gulp-if")
+# iconv         = require("gulp-iconv")
+isInit          = false
 
 # $.jadePhp( $.jade );
-paths =
-    tplSrc: [
-        "app/**/*.jade"
-        "!app/template/**/*.jade"
-        "!app/**/_*.jade"
-    ]
-    lessSrc: "app/assets/less/*.less"
-    scssSrc: "app/assets/scss/**/*.scss"
-    jsSrc: "app/assets/js/*.js"
-    coffeeSrc: "app/assets/js/*.coffee"
-    imgSrc: "app/assets/imgs/**"
-    rootDir: "dist/"
-    assetsDir: "dist/assets/"
-    imgDir: "dist/assets/imgs/"
+
+# ==========================================================
+#   initial settings
+# ==========================================================
+root    = "dist/"
+path    =
+    src:
+        jade: [
+            "app/**/*.jade"
+            "!app/template/**/*.jade"
+            "!app/**/_*.jade"
+        ]
+        html: [
+            "app/**/*.html"
+            "!app/template/**/*.html"
+            "!app/**/_*.html"
+        ]
+        less: "app/assets/less/**/*.less"
+        scss: "app/assets/scss/**/*.scss"
+        js: "app/assets/js/*.js"
+        coffee: "app/assets/js/*.coffee"
+        img : "app/assets/imgs/**"
+    dst:
+        root: root
+        assets: root + "assets/"
+        img: root + "assets/imgs/"
+
+hadError = (err) ->
+    str = ""
+    str += "=================================\nError:\n"
+    str += err
+    str +=  "\n=================================\n"
+    return str
+
+# ==========================================================
+#   browserSync
+# ==========================================================
 
 gulp.task "bs", ->
-    browserSync.init null,
+    root = "dist/"
+    browserSync
         server:
-          baseDir: "dist/"
+            baseDir: root
+        #   proxy : 'http://kntip.kn'
 
         notify: true
         xip: false
-
     return
 
 
-# browserSync.init( null, {
-#   proxy : 'http://jtr.nude'
-# });
+
+
+# ==========================================================
+#   require
+# ==========================================================
+
 gulp.task "require", ->
     browserify(
         entries: ["./app/assets/js/require.js"]
@@ -55,9 +83,13 @@ gulp.task "require", ->
     )
     .bundle()
     .pipe(vinylsource("plugins.js"))
-    .pipe(streamify($.uglify()))
+    # .pipe(streamify($.uglify()))
     .pipe gulp.dest("./dist/assets/js/")
     return
+
+# ==========================================================
+#   sprite images
+# ==========================================================
 
 gulp.task "sprite", ->
     spriteData =
@@ -74,9 +106,16 @@ gulp.task "sprite", ->
                     sprite.name = "sprite-" + sprite.name #VarMap(生成されるScssにいろいろな変数の一覧を生成)
                     return
               ))
-      spriteData.img.pipe gulp.dest("app/assets/imgs/sprite") #imgNameで指定したスプライト画像の保存先
-      spriteData.css.pipe gulp.dest("app/assets/scss/") #cssNameで指定したcssの保存先
-      return
+    spriteData.img.pipe gulp.dest("app/assets/imgs/sprite") #imgNameで指定したスプライト画像の保存先
+    spriteData.css.pipe gulp.dest("app/assets/scss/") #cssNameで指定したcssの保存先
+    return
+
+
+
+
+# ==========================================================
+#   relocation bower files
+# ==========================================================
 
 gulp.task "bower", ->
     filter = $.filter("**/*css")
@@ -94,20 +133,17 @@ gulp.task "bower", ->
         .pipe gulp.dest("dist/common/lib")
 
 
-hadError = (err) ->
-    str = ""
-    str += "=================================\nError:\n"
-    str += err
-    str +=  "\n=================================\n"
-    return str
 
 
+# ==========================================================
+#   JADE to HTML
+# ==========================================================
 
-gulp.task "html", ->
+gulp.task "jade", ->
     # If you need prettify HTML, uncomment below 2 lines.
     # .pipe($.prettify())
     gulp
-        .src(paths.tplSrc)
+        .src(path.src.jade)
         .pipe($.plumber(errorHandler: (err) ->
             console.log hadError( err.path )
         ))
@@ -116,10 +152,34 @@ gulp.task "html", ->
         ))
         .pipe( gulpif(isInit, $.changed("dist", extension: ".html")))
         .pipe( $.jade(pretty: true) )
-        .pipe( gulp.dest(paths.rootDir) )
+        # .pipe( $.iconv({decoding:"utf-8", encoding:"shift_jis"}))
+        .pipe( gulp.dest(path.dst.root) )
         .pipe( browserSync.reload(stream: true) )
 
 
+# ==========================================================
+#   EXTEND HTML
+# ==========================================================
+
+gulp.task "html", ->
+    gulp
+        .src(path.src.html)
+        .pipe($.plumber(errorHandler: (err) ->
+            console.log hadError( err )
+        ))
+        .pipe( gulpif(isInit, $.changed("dist", extension: ".html")))
+        .pipe( $.fileInclude() )
+        # shift_jisへ変換する場合はコメントアウト
+        .pipe( $.iconv({decoding:"utf-8", encoding:"shift_jis"}))
+        .pipe( gulp.dest(path.dst.root) )
+        .pipe( browserSync.reload(stream: true) )
+
+
+
+
+# ==========================================================
+#   Convert CSS
+# ==========================================================
 
 gulp.task "scss", ->
     # quiet : true,  // warningを非表示にする
@@ -127,7 +187,7 @@ gulp.task "scss", ->
     # .pipe($.autoprefixer('last 2 version'))
     # .pipe($.csso())
     gulp
-        .src(paths.scssSrc)
+        .src(path.src.scss)
         .pipe($.plumber(errorHandler: $.notify.onError("<%= error.message %>")))
         .pipe($.rubySass(
             loadPath: ["bower_components/foundation/scss"]
@@ -140,18 +200,23 @@ gulp.task "scss", ->
             templateOptions:
                 date: new Date()
         ))
-        .pipe(gulp.dest(paths.assetsDir + "css"))
+        .pipe(gulp.dest(path.dst.assets + "css"))
         .pipe browserSync.reload(
             stream: true
             once: true
             )
+
+
+# ==========================================================
+#   Minify CSS
+# ==========================================================
 
 gulp.task "css_min", ->
     gulp
         .src("dist/assets/css/*")
         .pipe($.csscomb())
         .pipe($.csso())
-        .pipe(gulp.dest(paths.assetsDir + "css"))
+        .pipe(gulp.dest(path.dst.assets + "css"))
         .pipe $.notify( #実行中にエラーがでたらデスクトップに通知する
             message: "cssmin: <%= file.relative %> @ <%= options.date %>"
             templateOptions:
@@ -159,14 +224,19 @@ gulp.task "css_min", ->
             )
 
 
+# ==========================================================
+#   Coffee to Javascript
+# ==========================================================
+
 gulp.task "coffee", ->
     gulp
-        .src(paths.coffeeSrc)
+        .src(path.src.coffee)
         .pipe($.plumber(errorHandler: (err) ->
-                throw hadError( err.location )
+                # throw hadError( err.location )
+                console.log hadError( err )
             ))
         .pipe($.coffee())
-        .pipe(gulp.dest(paths.assetsDir + "js"))
+        .pipe(gulp.dest(path.dst.assets + "js"))
 
 
 gulp.task "scripts", ->
@@ -175,21 +245,30 @@ gulp.task "scripts", ->
     #  .pipe($.concat('all.js'))
     # .pipe($.sourcemaps.write())
     gulp
-        .src(paths.jsSrc)
-        .pipe gulp.dest(paths.assetsDir + "js")
+        .src(path.src.js)
+        .pipe gulp.dest(path.dst.assets + "js")
+
+
+# ==========================================================
+#   Oprimization Images
+# ==========================================================
 
 gulp.task "image", ->
     # See gulp-imagemin page.
     gulp
-        .src(paths.imgSrc)
-        .pipe($.newer(paths.imgDir))
+        .src(path.src.img)
+        .pipe($.newer(path.dst.img))
         .pipe($.imagemin(optimizationLevel: 3))
-        .pipe gulp.dest(paths.imgDir)
+        .pipe gulp.dest(path.dst.img)
 
+
+# ==========================================================
+#   Build task
+# ==========================================================
 
 # Sequential tasks demo. Try to run 'npm run-script gulpbuild' or 'gulp build'.
 gulp.task "build", ->
-    runSequence "image", "html", [ # less and scripts task in parallel.
+    runSequence "image", "jade", [ # less and scripts task in parallel.
         "less"
         "scripts"
     ]
@@ -197,12 +276,13 @@ gulp.task "build", ->
 
 gulp.task "clean", del.bind(null, ["dist/assets/css"])
 gulp.task "watch", ->
-    gulp.watch [paths.tplSrc], ["html"]
+    gulp.watch [path.src.jade], ["jade"]
+    # gulp.watch [path.src.html], ["html"]
     gulp.watch ["app/assets/imgs/**/sprite/*.png"], ["sprite"]
-    gulp.watch [paths.scssSrc], ["scss"]
-    gulp.watch [paths.jsSrc], ["scripts"]
-    gulp.watch [paths.coffeeSrc], ["coffee"]
-    gulp.watch [paths.imgSrc], ["image"]
+    gulp.watch [path.src.scss], ["scss"]
+    gulp.watch [path.src.js], ["scripts"]
+    gulp.watch [path.src.coffee], ["coffee"]
+    gulp.watch [path.src.img], ["image"]
     return
 
 gulp.task "default", [
@@ -210,7 +290,7 @@ gulp.task "default", [
     "bs"
     "coffee"
     "scss"
-    "html"
+    "jade"
     "watch"
     ], ->
         console.log "complete gulp initialized"
