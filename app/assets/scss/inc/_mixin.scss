@@ -518,3 +518,56 @@ $easeInOutBack: cubic-bezier(0.680, -0.550, 0.265, 1.550);
   	float: right;
   }
 }
+
+
+@mixin fontsize($size: 24, $base: $base-font-size ) {
+  font-size: $size + px;
+  font-size: ($size / $base) * 1rem;
+}
+
+%gothic{
+  font-family: $gothic;
+}
+%font-xs{
+  @include fontsize( 10 );
+  line-height: 1.2;
+}
+%font-s{
+  @include fontsize( 12 );
+  line-height: 1.4;
+}
+%font-m{
+  @include fontsize( 14 );
+}
+%font-l{
+  @include fontsize( 18 );
+}
+%font-ll{
+  @include fontsize( 28 );
+}
+%font-xl{
+  @include fontsize( 36 );
+}
+%min-width{
+  min-width: $min-width;
+}
+
+%btn-universal{
+  text-align: center;
+  padding: 50px 0 100px 0;
+  a{
+    display: block;
+    width: 360px;
+    margin: 0 auto;
+    border: 2px solid #db4487;
+    color: #db4487;
+    line-height: 20px;
+    padding: 20px 0;
+    @include fontsize( 18 );
+    border-radius: 3px;
+    &:hover{
+      background-color: #db4487;
+      color: #fff;
+    }
+  }
+}

@@ -1,135 +1,24 @@
-/* ----------------------------------------------------------------
-  FOOTER
----------------------------------------------------------------- */
+.ftr-company{
+  text-align: center;
+  padding: 30px 0;
+  background-color: #f6f6f6;
+  h2{
+    @include fontsize( 16 );
+    font-weight: bold;
+    margin-bottom: 10px;
+  }
+  .address{
+    @include fontsize( 12 );
 
-.main-footer {
-    color: $maincolor;
-    a {
-        color: inherit;
-        &:hover {
-            text-decoration: underline;
-        }
-    }
-    @include mobile {
-        padding-top: 20px;
-    }
+  }
+
 }
-.footer-nav {
-    background-color: $maincolor;
-    color: #fff;
-    padding: 55px 0;
-    .left {
-        width: 310px;
-        @include fontsize(12);
-        p {
-            line-height: 2;
-            margin-bottom: 20px;
-        }
-        .logo {
-            margin-bottom: 36px;
-        }
-        .address {
-            @extend %font-xs;
-            margin-bottom: 0;
-        }
-        .email {
-            position: relative;
-            padding-left: 10px;
-            &:before {
-                margin-left: -10px;
-                position: absolute;
-                content: url('../imgs/footer/arrow-m.png');
-            }
-        }
+.ftr-nav{
+  margin: 30px 0;
+  li{
+    img{
+      width: 100%;
+      height: auto;
     }
-    .right {
-        width: 650px;
-        @include fontsize(11);
-    }
-    .footer-cate {
-        margin-bottom: 26px;
-        li {
-            float: left;
-            margin-right: 30px;
-            line-height: 14px;
-            &.first {
-                @include fontsize(14);
-                &:before {
-                    content: url('../imgs/footer/arrow-l.png');
-                }
-            }
-            &:before {
-                content: url('../imgs/footer/arrow-m.png');
-            }
-        }
-    }
-    .footer-all {
-        border-bottom: 1px dotted #aaa;
-        padding-bottom: 10px;
-        ul {
-            width: 130px;
-            float: left;
-        }
-        li {
-            margin-bottom: 10px;
-            &:before {
-                content: url('../imgs/footer/arrow-s.png');
-            }
-        }
-    }
-    .footer-corp {
-        padding: 14px 0 0;
-        li {
-            float: left;
-            width: 130px;
-            @include fontsize(14);
-            &:before {
-                content: url('../imgs/footer/arrow-l.png');
-            }
-        }
-    }
-    .footer-cate, .footer-all, .footer-corp {
-        li {
-            position: relative;
-            padding-left: 16px;
-            &:before {
-                margin-left: -16px;
-                position: absolute;
-            }
-        }
-    }
-}
-.footer-util {
-    background-color: #1c203e;
-    color: #fff;
-    @include fontsize( 10);
-    padding: 24px 0;
-    .ext {
-        float: left;
-        ul {
-            list-style: none;
-        }
-        li {
-            display: inline;
-            margin-right: 2em;
-        }
-        .divider {
-            color: #ccc;
-            &:before {
-                content: "|";
-                margin: 0 12px;
-            }
-        }
-    }
-}
-.copyright {
-    margin: 0;
-    float: right;
-    p {
-        line-height: 1;
-        margin: 0;
-    }
-    @include mobile {
-        @include fontsize( 8);
-    }
+  }
 }

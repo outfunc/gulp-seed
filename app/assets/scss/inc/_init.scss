@@ -1,6 +1,6 @@
 /*
-  INIT
----------------------------------------------------------------- */
+  INITIALIZE
+========================================================= */
 *, *:before, *:after {
   box-sizing: border-box;
 }
@@ -11,7 +11,6 @@ html{
 }
 
 body{
-  // @include fontsize( $base-font-size );
   font-size: $base-font-size+px;
   line-height: 1.7;
   font-family: $font-fami;
@@ -24,7 +23,6 @@ div, dl, dt, dd, ul, ol, li, pre, form, blockquote, th, td {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  // font-family: "Helvetica Neue", "Helvetica", Helvetica, Arial, sans-serif !important;
   font-weight: normal;
   font-style: normal;
   text-rendering: optimizeLegibility;
@@ -70,6 +68,9 @@ ul,ol{
   list-style: none;
 }
 
+/*
+  GENERAL STYLES
+========================================================= */
 .text-center{
   text-align: center;
 }
@@ -90,7 +91,8 @@ $supportIE: true; // IE非対応の場合 false
   @include hide-text;
 }
 .notes{
-  @extend %font-s;
+  @include fontsize( 12 );
+  line-height: 1.4;
 }
 .btn a{
   display: block;
@@ -127,11 +129,38 @@ $supportIE: true; // IE非対応の場合 false
   }
 }
 
+// ------------------------------------------
+//  @for を使って余白調整用のclassを生成する
+// ------------------------------------------
+@if $spaceClass {
+  @for $i from 0 through $space_endValue {
+    .mt#{$i * 5} {
+      margin-top: 5px * $i !important;
+    }
+    .mb#{$i * 5} {
+      margin-bottom: 5px * $i !important;
+    }
+    @if $spacePadding {
+      .pt#{$i * 5} {
+        padding-top: 5px * $i !important;
+      }
+      .pb#{$i * 5} {
+        padding-bottom: 5px * $i !important;
+      }
+    }
+  }
+}
+
+
+/*
+  IE FALLBACK STYLES
+========================================================= */
 .ie8,.ie7{
   .row{
-    width: 960px !important;
+    width: $min-width !important;
     .row{
         width: auto !important;
     }
   }
 }
+

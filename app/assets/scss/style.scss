@@ -4,8 +4,230 @@
 @import "inc/mixin";
 @import "sprite";
 // @import "inc/layout";
-@import "inc/reset";
+@import "inc/normalize";
 @import "inc/init";
 // @import "inc/foundation.settings";
 // @import "foundation";
 // @import "inc/mailform";
+// @import "bxslider";
+
+.inner{
+  margin-right: 4%;
+  margin-left: 4%;
+}
+
+.globalheader{
+  .title{
+    width: 60%;
+    margin: 0 auto;
+    padding: 30px 0 20px;
+  }
+  .address{
+    @include fontsize( 12 );
+  }
+}
+.mainimg{
+  padding: 10px 0;
+}
+
+.masthead {
+  background-image: url("../img/header_bg.png");
+  background-size: 7px auto;
+  height: 63px;
+  text-align: center;
+}
+.masthead .logo {
+  display: block;
+  padding-top: 8px;
+}
+
+img.flex {
+  width: 100%;
+  height: auto;
+}
+
+.globalheader .title, .globalheader .address {
+  text-align: center;
+}
+.globalheader .title {
+  // margin: 20px 0;
+}
+.globalheader .address {
+  line-height: 2;
+}
+
+// section h2 {
+//   padding: 30px 0 10px 0;
+// }
+// section .content {
+//   padding: 3%;
+// }
+
+// section.greeting p {
+//   margin-bottom: 2em;
+// }
+
+// section.access .content {
+//   padding: 8%;
+// }
+
+
+.gmap {
+  position: relative;
+  padding-bottom: 56.25%;
+  padding-top: 30px;
+  height: 0;
+  overflow: hidden;
+  max-width: 100%;
+  height: auto;
+}
+.gmap iframe, .gmap object, .gmap .embed {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+}
+
+/*
+  PAGE TOP
+========================================================= */
+.page-top{
+  .globalheader{
+    .title{
+      width: 84%;
+    }
+  }
+  .main-contents{
+    .info{
+      margin: 20px 5%;
+    }
+  }
+}
+
+/*
+  PAGE MESSAGE
+========================================================= */
+.page-message{
+  .txt{
+    @include fontsize( 14 );
+  }
+}
+
+/*
+  PAGE LAWYER
+========================================================= */
+.page-lawyer{
+  .lawyer-name{
+    text-align: center;
+    h2{
+      @include fontsize( 24 );
+      font-weight: bold;
+      position: relative;
+      // padding-left: 60px;
+      // width: 4em;
+
+    }
+    .small{
+      @include fontsize( 16 );
+      display: inline-block;
+      // position: absolute;
+      // top: 50%;
+      // left: 0;
+      margin-right: 10px;
+    }
+    .en{
+      @include fontsize( 10 );
+      color: #043459;
+    }
+  }
+  .lawyer-org{
+    text-align: center;
+  }
+  .lawyer-resume{
+    h3{
+      @include fontsize( 12 );
+      color: #043459;
+      font-weight: bold;
+    }
+    li{
+      @include fontsize( 11 );
+    }
+    ul{
+      margin-bottom: 2em;
+    }
+  }
+}
+
+/*
+  PAGE ACCESS
+========================================================= */
+
+
+.page-access {
+    .access .gmap, .access dl {
+        margin-bottom: 30px;
+    }
+    .access dd, .access dt {
+        margin: 0;
+        padding: 0;
+        @include fontsize(12);
+    }
+    .access dt {
+        @include fontsize(18);
+        color: #043459;
+        font-weight: bold;
+    }
+    .access dd strong {
+        color: #e60012;
+    }
+    .access ol {
+        margin: 20px 0 40px;
+        padding-left: 2em;
+    }
+    .access ol li {
+        @include fontsize(12);
+        margin-bottom: 4px;
+        list-style-type: decimal;
+    }
+}
+
+
+
+
+/*
+  PAGE PRACTICE
+========================================================= */
+.page-practice{
+  section{
+    margin-bottom: 2em;
+    h3{
+      border-top: 4px solid #043459;
+      // border-bottom: 1px solid #e5e5e5;
+      // background: #F6F6F6;
+      color: #043459;
+      margin: 0;
+      padding: 1em 16px 1.2em;
+      text-align: center;
+      @include fontsize(16);
+      font-weight: bold;
+    }
+    li{
+      @include fontsize(12);
+      list-style-type: disc;
+      list-style-position: inside;
+    }
+  }
+
+}
+
+/*
+  FOOTER
+========================================================= */
+@import "footer";
+
+
+/*
+  PRINTS
+========================================================= */
+@import "inc/print";
